@@ -1,65 +1,88 @@
 # Fullstack Junior-Phase Boilerplate
-### A collaborative “cheat sheet” of boilerplate code
 
-### WHAT IS THIS?
-The boilerplate code required to set up the packages we’ve learned will someday be as ingrained in our minds as our birthdays and social security numbers. Until that day arrives, we wanted to create a concise, easy-to-read reference to get your projects up and running as quickly as possible.
+- [Fullstack Junior-Phase Boilerplate](#fullstack-junior-phase-boilerplate)
+  - [OVERVIEW](#overview)
+  - [Express](#express)
+  - [PostgreSQL](#postgresql)
+  - [Sequelize](#sequelize)
+  - [Socket.IO](#socketio)
+  - [React](#react)
+  - [Redux](#redux)
+  - [React-Redux](#react-redux)
+  - [Webpack](#webpack)
+  - [Thunk](#thunk)
+
+## OVERVIEW
+
+### WHAT THIS IS
+
+[an attempt at] A concise, easy-to-read reference to get your projects up and running as quickly as possible. All the "setup" code you need will be found here.
+
+### WHAT THIS ISN'T
 
 This is NOT meant to be a “copy-paste and go” sort of reference, but rather a quick “reminder” sheet. You will still have to know what this code does and adapt it to your own needs.
 
-### HOW CAN I EDIT THIS?
-You can hop into suggestion mode through the navigation in the top-right corner and start typing away! That’ll let you leave comments and make temporary edits to this document, which one of the admins can turn into permanent edits once we log back in! If you’re contributing via suggestions, you won’t need to worry about formatting, we can pretty it up to match the rest of the document.
+### HOW TO EDIT
 
-The code blocks are formatted using Code Pretty, which is pretty straightforward. To keep things consistent and to make formatting easy, please put your code blocks in single-cell-tables. (If you can’t figure out Code Pretty, just put your suggestions in and we’ll do our best to format it before approving it.)
-
+Fork this repo and make a pull request!
 
 ## Express
 
 ### NPM Modules
+
     npm install --save express body-parser {morgan OR volleyball}
 
-#### Dependencies
-    const express = require('express');
-    const path = require('path'); // path formatting utility
-    const bodyParser = require('body-parser'); // parsing middleware
-    const morgan = require('morgan'); // logging middleware, can substitute with volleyball
+### Dependencies
 
-#### Setup
-    // define express server
-    const app = express();
+```javascript
+const express = require('express');
+const path = require('path'); // path formatting utility
+const bodyParser = require('body-parser'); // parsing middleware
+const morgan = require('morgan'); // logging middleware, can substitute with volleyball
+```
 
-    // use morgan logging middleware
-    app.use(morgan('dev'));
+### Setup
 
-    // use body-parser middleware
-    app.use(bodyParser.json()); // parse JSON requests
-    app.use(bodyParser.urlencoded({ extended: true })); // parse URL requests
+```javascript
+// define express server
+const app = express();
 
-    // static routing for /public/ path
-    app.use(express.static(path.join(__dirname, '..', 'public')));
+// use morgan logging middleware
+app.use(morgan('dev'));
 
-    // send index.html
-    app.use('*', (req, res, next) =>
-      res.sendFile(path.join(__dirname, '..', 'public/index.html'))
-    );
+// use body-parser middleware
+app.use(bodyParser.json()); // parse JSON requests
+app.use(bodyParser.urlencoded({ extended: true })); // parse URL requests
 
-    // start server and listen on port 3000 (usually done after a db.sync)
-    app.listen(3000, () => console.log(`server listening on port 3000`));
-    // error-handling, should come AFTER all other routes
-    app.use((err, req, res, next) =>
-      res.status(err.status || 500).send(err.message || 'Internal server error.')
-    );
+// static routing for /public/ path
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
-#### Express Router
-    // in 'index.js' or 'start' file
-    const apiRouter = require('./api'); // will depend on route and file structure
-    app.use('/api', apiRouter);
+// send index.html
+app.use('*', (req, res, next) =>
+  res.sendFile(path.join(__dirname, '..', 'public/index.html'))
+);
 
-    // in '/api/index.js'
-    const router = require('express').Router();
-    module.exports = router;
+// start server and listen on port 3000 (usually done after a db.sync)
+app.listen(3000, () => console.log(`server listening on port 3000`));
+// error-handling, should come AFTER all other routes
+app.use((err, req, res, next) =>
+  res.status(err.status || 500).send(err.message || 'Internal server error.')
+);
+```
 
-    // write routes (i.e. router.get(), router.set() or sub-routes)
+### Express Router
 
+```javascript
+// in 'index.js' or 'start' file
+const apiRouter = require('./api'); // will depend on route and file structure
+app.use('/api', apiRouter);
+
+// in '/api/index.js'
+const router = require('express').Router();
+module.exports = router;
+
+// write routes (i.e. router.get(), router.set() or sub-routes)
+```
 
 ## PostgreSQL
 
@@ -67,329 +90,387 @@ This one is pretty simple: you just need to run ‘createdb {server_name}’ on 
 
 If anyone else can think of something we need to remember here for setup, please suggest it!
 
-
 ## Sequelize
 
-#### NPM Packages
+### NPM Packages
+
     npm install --save sequelize pg {pg-native AND/OR pg-hstore}
 
-#### Dependencies
+### Dependencies
+
+```javascript
 const Sequelize = require('sequelize');
+```
 
-#### Setup
-    const db = new Sequelize('postgres://localhost:5432/DB-NAME-HERE', {
-        logging: false,
-        native: true // omit this line if using pg-hstore
-      }
-    );
+### Setup
 
+```javascript
+const db = new Sequelize('postgres://localhost:5432/DB-NAME-HERE', {
+  logging: false,
+  native: true // omit this line if using pg-hstore
+}
+);
+```
 
 ## Socket.IO
 
-#### NPM Packages
+### NPM Packages
+
     npm install socket.io --save
 
-#### Create Server
-    var socketio = require('socket.io');
+### Create Server
 
-    // This part below app.listen so the express app has priority
-    var io = socketio(server);
-#### User Socket Server as Event-Emitter
-    io.on('connection', function (socket) {
-    /* This function receives the newly connected socket.
-           This function will be called for EACH browser that connects to our server.
-           i.e. If Ben and Matt both connect to the server, this will run once when Ben
-           connects, and once when Matt connects */
-        console.log('A new client has connected!');
-        console.log(socket.id);
-    });
+```javascript
+const socketio = require('socket.io');
 
-#### Creating Socket Event
-    // Never seen window.location before?
-    // This object describes the URL of the page we're on!
-    var socket = io(window.location.origin);
 
-    socket.on('connect', function () {
-        console.log('I have made a persistent two-way connection to the server!');
-    });
+// This part below app.listen so the express app has priority
+const io = socketio(server);
+```
 
-    // **Remember: socket refers to one individual socket
-    //             io refers to every socket
+### User Socket Server as Event-Emitter
 
-#### Quick reference for methods below:
-    socket.emit('message', "this is a test"); //sending to sender-client only
+```javascript
+io.on('connection', function (socket) {
+      /* This function receives the newly connected socket.
+      This function will be called for EACH browser that connects to our server.
+      i.e. If Ben and Matt both connect to the server, this will run once when Ben
+      connects, and once when Matt connects */
+  console.log('A new client has connected!');
+  console.log(socket.id);
+});
+```
 
-    socket.broadcast.emit('message', "this is a test"); //sending to all clients except sender
+### Creating Socket Event
 
-    socket.broadcast.to('game').emit('message', 'nice game'); //sending to all clients in 'game' room(channel) except sender
+```javascript
+// Never seen window.location before?
+// This object describes the URL of the page we're on!
+var socket = io(window.location.origin);
 
-    socket.to('game').emit('message', 'enjoy the game'); //sending to sender client, only if they are in 'game' room(channel)
+socket.on('connect', function () {
+  console.log('I have made a persistent two-way connection to the server!');
+});
 
-    socket.broadcast.to(socketid).emit('message', 'for your eyes only'); //sending to individual socketid
+// **Remember: socket refers to one individual socket
+//             io refers to every socket
+```
 
-    io.emit('message', "this is a test"); //sending to all clients, include sender
+### Quick reference for methods below:
 
-    io.in('game').emit('message', 'cool game'); //sending to all clients in 'game' room(channel), include sender
+```javascript
+socket.emit('message', "this is a test"); //sending to sender-client only
 
-    io.of('myNamespace').emit('message', 'gg'); //sending to all clients in namespace 'myNamespace', include sender
+socket.broadcast.emit('message', "this is a test"); //sending to all clients except sender
 
-    socket.emit(); //send to all connected clients
+socket.broadcast.to('game').emit('message', 'nice game'); //sending to all clients in 'game' room(channel) except sender
 
-    socket.broadcast.emit(); //send to all connected clients except the one that sent the message
+socket.to('game').emit('message', 'enjoy the game'); //sending to sender client, only if they are in 'game' room(channel)
 
-    socket.on(); //event listener, can be called on client to execute on server
+socket.broadcast.to(socketid).emit('message', 'for your eyes only'); //sending to individual socketid
 
-    io.sockets.socket(); //for emitting to specific clients
-    io.sockets.emit(); //send to all connected clients (same as socket.emit)
-    io.sockets.on() ; //initial connection from a client.
+io.emit('message', "this is a test"); //sending to all clients, include sender
+
+io.in('game').emit('message', 'cool game'); //sending to all clients in 'game' room(channel), include sender
+
+io.of('myNamespace').emit('message', 'gg'); //sending to all clients in namespace 'myNamespace', include sender
+
+socket.emit(); //send to all connected clients
+
+socket.broadcast.emit(); //send to all connected clients except the one that sent the message
+
+socket.on(); //event listener, can be called on client to execute on server
+
+io.sockets.socket(); //for emitting to specific clients
+io.sockets.emit(); //send to all connected clients (same as socket.emit)
+io.sockets.on() ; //initial connection from a client.
+```
 
 ## React
 
-#### Tom’s Super Important Laws
+### Tom’s Super Important Laws
+
 State must ALWAYS be initialized with the appropriate data type.
 Dumb components should be as dumb as possible, they should only calculate the view and nothing more.
 All asynchronous behavior (such as AJAX) and side effects should go into a thunk.
 
-#### NPM Packages
+### NPM Packages
+
     npm install --save react react-router-dom
 
-#### Dependencies
-    import React from 'react';
-    import { HashRouter as Router, Route, Link } from 'react-router-dom';
+### Dependencies
 
-#### Creating a Smart Component and Using React Router
-    export default class ViewPets extends React.Component {
-      constructor(props) {
-        super(props);
-        this.state = {
-          view: 'all',
-          property: 'value'
-        };
-      }
+```javascript
+import React from 'react';
+import { HashRouter as Router, Route, Link } from 'react-router-dom';
+```
 
-      changeState(view) {
-        this.setState({
-          view: view,
-          property: 'newValue'
-        })
-      }
+### Creating a Smart Component and Using React Router
 
-      componentDidMount() {
-        this.setState({ view: this.props.match.params.view })
-      }
+```javascript
+export default class ViewPets extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      view: 'all',
+      property: 'value'
+    };
+  }
 
-      render() {
-        let animals = catsData.concat(dogsData);
-        if(this.state.view === 'cats' {
-          animals = catsData;
-        }
+  changeState(view) {
+    this.setState({
+      view: view,
+      property: 'newValue'
+    })
+  }
 
-        return (
-          <div>
-            <h1>Pets</h1>
-            <AnimalList animals={animals} />
-          </div>
-        )
-      }
+  componentDidMount() {
+    this.setState({ view: this.props.match.params.view })
+  }
+
+  render() {
+    let animals = catsData.concat(dogsData);
+    if(this.state.view === 'cats' {
+      animals = catsData;
     }
 
-#### Creating a Dumb Component
-    const AnimalList = ({ animals }) => {
-      return (
-        <div className="gallery">
-          { animals.map(animal => {
-            return <AnimalCard key={animal.id} animal={animal} />;
-          })}
-        </div>
-      )
-    }
+    return (
+      <div>
+        <h1>Pets</h1>
+        <AnimalList animals={animals} />
+      </div>
+    )
+  }
+}
+```
 
-#### Component Lifecycle Methods
-    /* Mounting */
-      constructor(props) {} // Called before a component is mounted.
+### Creating a Dumb Component
 
-      componentWillMount() {} // Called immediately before mounting occurs.
+```javascript
+const AnimalList = ({ animals }) => {
+  return (
+    <div className="gallery">
+      { animals.map(animal => {
+        return <AnimalCard key={animal.id} animal={animal} />;
+      })}
+    </div>
+  )
+}
+```
 
-      render() {} // Renders using returned JSX
+### Component Lifecycle Methods
 
-      componentDidMount() {} // Called immediately after mounting.
+```javascript
+/* Mounting */
+constructor(props) {} // Called before a component is mounted.
 
-    /* Updating */
-      componentWillReceiveProps(nextProps) {} // Invoked before a mounted component gets new props.
+componentWillMount() {} // Called immediately before mounting occurs.
 
-      shouldComponentUpdate(nextProps, nextState) {} // Invoked before rendering when new props or state are received.
+render() {} // Renders using returned JSX
 
-      componentWillUpdate(nextProps, nextState) {} // Invoked immediately before rendering after new props are received.
+componentDidMount() {} // Called immediately after mounting.
 
-      componentDidUpdate(prevProps, prevState) {} // Invoked immediately after updating occurs, but not called on initial render.
+/* Updating */
+componentWillReceiveProps(nextProps) {} // Invoked before a mounted component gets new props.
 
-    /* Unmounting */
-      componentWillUnmount() {} // Invoked immediately before a component is unmounted or destroyed.
+shouldComponentUpdate(nextProps, nextState) {} // Invoked before rendering when new props or state are received.
 
-    /* Error Handling */
-      componentDidCatch(error, info) {} // Catches errors anywhere in child component tree.
+componentWillUpdate(nextProps, nextState) {} // Invoked immediately before rendering after new props are received.
 
-#### Using React Router
-    // Inside a Component
-    render() {
-        return (
-          <Router>
-            <div className="col-xs-10">
-              <Route exact path="/" component={AllAlbums} />
-              <Route path="/albums" component={AllAlbums} />
-            </div>
-          </Router>
-        );
-      }
+componentDidUpdate(prevProps, prevState) {} // Invoked immediately after updating occurs, but not called on initial render.
 
-#### Moar Code
+/* Unmounting */
+componentWillUnmount() {} // Invoked immediately before a component is unmounted or destroyed.
 
+/* Error Handling */
+componentDidCatch(error, info) {} // Catches errors anywhere in child component tree.
+```
 
+### Using React Router
 
+```javascript
+// Inside a Component
+render() {
+  return (
+    <Router>
+      <div className="col-xs-10">
+        <Route exact path="/" component={AllAlbums} />
+        <Route path="/albums" component={AllAlbums} />
+      </div>
+    </Router>
+  );
+}
+```
+
+### Moar Code
+
+```javascript
+
+```
 
 ## Redux
 
-#### NPM Packages
+### NPM Packages
+
     npm install --save ***
 
-#### Dependencies
-    // In store.js
-    import { createStore } from 'redux';
+### Dependencies
 
-#### Define the Initial State
-    const initialState = {
-         counter: 0,
-    };
+```javascript
+// In store.js
+import { createStore } from 'redux';
+```
 
-#### Define Action Types
-    const INCREMENT_COUNTER = 'INCREMENT_COUNTER';
+### Define the Initial State
 
-#### Define Action Creator
-    export function incrementCounter(interval) {
-      return {
-        type: INCREMENT_COUNTER,
-        interval
-      }
-    }
+```javascript
+const initialState = {
+  counter: 0,
+};
+```
 
-#### Define Reducer
-    function reducer(prevState=initialState, action) {
-      switch(action.type) {
-        case INCREMENT_COUNTER:
-          let newState = Object.assign({}, prevState);
-          newState.counter += action.interval;
-          return newState;
-        default:
-          return prevState;
-      }
-    };
+### Define Action Types
 
-#### Define and Export Store
-    const store = createStore(reducer);
-    export default store;
+```javascript
+const INCREMENT_COUNTER = 'INCREMENT_COUNTER';
+```
 
+### Define Action Creator
+
+```javascript
+export function incrementCounter(interval) {
+  return {
+    type: INCREMENT_COUNTER,
+    interval
+  }
+}
+```
+
+### Define Reducer
+
+```javascript
+function reducer(prevState=initialState, action) {
+  switch(action.type) {
+    case INCREMENT_COUNTER:
+      let newState = Object.assign({}, prevState);
+      newState.counter += action.interval;
+      return newState;
+    default:
+      return prevState;
+  }
+};
+```
+
+### Define and Export Store
+
+```javascript
+const store = createStore(reducer);
+export default store;
+```
 
 ## React-Redux
 
-#### NPM Packages
+### NPM Packages
+
     npm install --save react-redux
 
-#### Dependencies (index.js)
-    import { Provider } from 'react-redux';
-    import React from 'react';
-    import ReactDOM from 'react-dom';
-    import { BrowserRouter as Router } from 'react-router-dom'; // choose router type
-    import { Main } from './components'; // will depend on where your Main.js is defined
-    import store from './store'; // will depend on where your store is defined
+### Dependencies (index.js)
 
-#### Setup (index.js)
-    ReactDOM.render(
-     <Provider store={store}>
-       <Router>
-         <Main /> // render your main component
-       </Router>
-     </Provider>,
-     document.getElementById('app') // second argument to render(), references root node in your HTML
-    );
+```javascript
+import { Provider } from 'react-redux';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter as Router } from 'react-router-dom'; // choose router type
+import { Main } from './components'; // will depend on where your Main.js is defined
+import store from './store'; // will depend on where your store is defined
+```
 
-#### Dependencies (connected component)
-    import { connect } from 'react-redux';
+### Setup (index.js)
 
-#### Setup (connected component)
-    /* code here */
+```javascript
+ReactDOM.render(
+  <Provider store={store}>
+    <Router>
+      <Main /> // render your main component
+    </Router>
+  </Provider>,
+  document.getElementById('app') // second argument to render(), references root node in your HTML
+);
+```
 
+### Dependencies (connected component)
+
+```javascript
+import { connect } from 'react-redux';
+```
+
+### Setup (connected component)
+
+```javascript
+/* code here */
+```
 
 ## Webpack
 
-#### Webpack.config.js
-    'use strict';
+### Webpack.config.js
 
-    // The exports is a configuration object that tells webpack what to do
-    module.exports = {
+```javascript
+'use strict';
 
-      // The entry field tells webpack where our application starts.
-      // Webpack will start building this file and any subsequent file(s) that are imported by that file
-      entry: './browser/react/index.js',
+// The exports is a configuration object that tells webpack what to do
+module.exports = {
 
-      // The output field specifies where webpack's output will go. In this case, we've specified
-      // that it should put it into a file called bundle.js in our public directory
-      output: {
-        path: __dirname,
-        filename: './public/bundle.js'
-      },
+  // The entry field tells webpack where our application starts.
+  // Webpack will start building this file and any subsequent file(s) that are imported by that file
+  entry: './browser/react/index.js',
 
-      // The context field simply sets the context for relative pathnames
-      context: __dirname,
+  // The output field specifies where webpack's output will go. In this case, we've specified
+  // that it should put it into a file called bundle.js in our public directory
+  output: {
+    path: __dirname,
+    filename: './public/bundle.js'
+  },
 
-      // This handy option tells webpack to create another, special file called "bundle.js.map".
-      // This special file is called a "source-map".
-      // If enabled, your browser will automatically request this file so that it can faithfully re-create your source code in your browser's dev tools.
-      // This way, when you open the code for debugging in Chrome dev tools, instead of seeing the hard-to-read transpiled code that webpack creates, you'll
-      // see your clean source code.
-      // For more info: https://developers.google.com/web/tools/chrome-devtools/javascript/source-maps
-      devtool: 'source-map',
+  // The context field simply sets the context for relative pathnames
+  context: __dirname,
 
-      // Here is where we specify what kinds of special syntax webpack should look out for
-      module: {
-        // Loaders are special node modules that we've installed that know how to parse certain syntax.
-        // There are loaders for all different kinds of syntax.
-        loaders: [
-          {
-            // Here, we want to test and see if any files end with .js or .jsx.
-            // Only files that match this criteria will be parsed by this loader.
-            test: /jsx?$/,
-            // We want webpack to ignore anything in a node_modules or bower_components directory.
-            // This is very important - modules have a responsibility to build their own js files.
-            // If we were to do this ourselves, building our bundle.js would take forever!
-            exclude: /(node_modules|bower_components)/,
-            // We're using the babel-loader module to read our files - it can handle both ES6 and JSX!
-            // Babel will use our .babelrc to figure out how to compile our code
-            loader: 'babel-loader',
-            // Here, we telling webpack to look for any syntax that looks like ES6 and any syntax that looks like JSX.
-            // If it finds it, the babel-loader will transpile it for us!
-            query: {
-              presets: ['react', 'es2015']
-            }
-          }
-        ]
+  // This handy option tells webpack to create another, special file called "bundle.js.map".
+  // This special file is called a "source-map".
+  // If enabled, your browser will automatically request this file so that it can faithfully re-create your source code in your browser's dev tools.
+  // This way, when you open the code for debugging in Chrome dev tools, instead of seeing the hard-to-read transpiled code that webpack creates, you'll
+  // see your clean source code.
+  // For more info: https://developers.google.com/web/tools/chrome-devtools/javascript/source-maps
+  devtool: 'source-map',
+
+  // Here is where we specify what kinds of special syntax webpack should look out for
+  module: {
+    // Loaders are special node modules that we've installed that know how to parse certain syntax.
+    // There are loaders for all different kinds of syntax.
+    loaders: [
+      {
+        // Here, we want to test and see if any files end with .js or .jsx.
+        // Only files that match this criteria will be parsed by this loader.
+        test: /jsx?$/,
+        // We want webpack to ignore anything in a node_modules or bower_components directory.
+        // This is very important - modules have a responsibility to build their own js files.
+        // If we were to do this ourselves, building our bundle.js would take forever!
+        exclude: /(node_modules|bower_components)/,
+        // We're using the babel-loader module to read our files - it can handle both ES6 and JSX!
+        // Babel will use our .babelrc to figure out how to compile our code
+        loader: 'babel-loader',
+        // Here, we telling webpack to look for any syntax that looks like ES6 and any syntax that looks like JSX.
+        // If it finds it, the babel-loader will transpile it for us!
+        query: {
+          presets: ['react', 'es2015']
+        }
       }
-    };
+    ]
+  }
+};
+```
 
+## Thunk
 
-#### Thunk
+### NPM Packages
 
-## NPM Packages
     npm install --save redux-thunk
-
-
-
-
-
-
-Additional Resources
-*Placeholder*
-
-
-
-React
-

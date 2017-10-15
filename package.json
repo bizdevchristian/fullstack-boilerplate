@@ -1,0 +1,25 @@
+{
+  "name": "fullstack-boilerplate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-markdown-it": "^0.1.1",
+    "markdown-it": "^8.4.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mjthor86/fullstack-boilerplate.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mjthor86/fullstack-boilerplate/issues"
+  },
+  "homepage": "https://github.com/mjthor86/fullstack-boilerplate#readme"
+}
