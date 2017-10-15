@@ -24,7 +24,9 @@ This is NOT meant to be a “copy-paste and go” sort of reference, but rather 
 
 ### HOW TO EDIT
 
-[Fork this repo](https://github.com/mjthor86/fullstack-boilerplate#fork-destination-box) and [make a pull request](https://help.github.com/articles/creating-a-pull-request/)!
+[Fork this repo](https://github.com/mjthor86/fullstack-boilerplate#fork-destination-box) and [make a pull request](https://help.github.com/articles/creating-a-pull-request/)! This document was written in [Markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet), and the Gulp task to build the HTML is included [(VSC instructions here)](https://code.visualstudio.com/docs/languages/markdown).
+
+It isn't _required_ to build the HTML for your pull requests, but please at least write them in Markdown!
 
 ## Express
 
