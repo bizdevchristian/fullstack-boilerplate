@@ -24,7 +24,7 @@ This is NOT meant to be a “copy-paste and go” sort of reference, but rather 
 
 ### HOW TO EDIT
 
-Fork this repo and [make a pull request](https://help.github.com/articles/creating-a-pull-request/)!
+[Fork this repo](https://github.com/mjthor86/fullstack-boilerplate#fork-destination-box) and [make a pull request](https://help.github.com/articles/creating-a-pull-request/)!
 
 ## Express
 
