@@ -1,16 +1,19 @@
 # Fullstack Junior-Phase Boilerplate
 
-- [Fullstack Junior-Phase Boilerplate](#fullstack-junior-phase-boilerplate)
-  - [OVERVIEW](#overview)
-  - [Express](#express)
-  - [PostgreSQL](#postgresql)
-  - [Sequelize](#sequelize)
-  - [Socket.IO](#socketio)
-  - [React](#react)
-  - [Redux](#redux)
-  - [React-Redux](#react-redux)
-  - [Webpack](#webpack)
-  - [Thunk](#thunk)
+- [Overview](#overview)
+  - [What is this?](#what-this-is)
+  - [What this ISN'T](#what-this-isnt)
+  - [How can I contribute?](#how-to-edit)
+  - [WHAT can I contribute?](#current-needs)
+- [Express](#express)
+- [PostgreSQL](#postgresql)
+- [Sequelize](#sequelize)
+- [Socket.IO](#socketio)
+- [React](#react)
+- [Redux](#redux)
+- [React-Redux](#react-redux)
+- [Webpack](#webpack)
+- [Thunk](#thunk)
 
 ## OVERVIEW
 
@@ -24,9 +27,17 @@ This is NOT meant to be a “copy-paste and go” sort of reference, but rather 
 
 ### HOW TO EDIT
 
-[Fork this repo](https://github.com/mjthor86/fullstack-boilerplate#fork-destination-box) and [make a pull request](https://help.github.com/articles/creating-a-pull-request/)! This document was written in [Markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet), and the Gulp task to build the HTML is included [(VSC instructions here)](https://code.visualstudio.com/docs/languages/markdown).
+[Fork this repo](https://github.com/mjthor86/fullstack-boilerplate#fork-destination-box) and [make a pull request](https://help.github.com/articles/creating-a-pull-request/)! This document was written in [Markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet), and the Gulp task to build the HTML is included ([VSC instructions here](https://code.visualstudio.com/docs/languages/markdown)).
 
 It isn't _required_ to build the HTML for your pull requests, but please at least write them in Markdown!
+
+### CURRENT NEEDS
+
+- [x] General editing (literally everywhere)
+- [ ] Webpack
+- [ ] React-Thunk
+- [ ] React-Redux
+- [ ] HTML/CSS formatting (let's make it pretty!)
 
 ## Express
 
