@@ -487,3 +487,39 @@ module.exports = {
 ### NPM Packages
 
     npm install --save redux-thunk
+
+### Dependencies
+```javascript
+import axios from 'axios';
+import thunkMiddleware from 'redux-thunk';
+```
+
+### GET Thunk
+```javascript
+export function fetchMessages () {
+    return function thunk (dispatch) {
+        return axios.get('/api/messages')
+        .then(res => res.data)
+        .then(messages => {
+            const action = getMessages(messages);
+            dispatch(action);
+        });
+    }
+}
+```
+
+### POST Thunk
+```javascript
+export function postMessage (message) {
+    return function thunk (dispatch) {
+        return axios.post('/api/messages', message)
+        .then(res => res.data)
+        .then(newMessage => {
+            const action = getMessage(newMessage);
+            dispatch(action);
+            socket.emit('new-message', newMessage);
+        });
+    }
+}
+```
+
